@@ -90,6 +90,121 @@ def draw_bridge(draw, x0, y0, w, h):
     draw.rectangle([x0, y0, x0 + w, y0 + h], outline=NAVY, width=2)
 
 
+def draw_flags(draw, x0, y0, w, h):
+    """Three small flags (US, China, Russia) on poles — trilateral talks."""
+    sky = (188, 214, 232)
+    draw.rectangle([x0, y0, x0 + w, y0 + h], fill=sky)
+    draw.rectangle([x0, y0 + h - 8, x0 + w, y0 + h], fill=(226, 220, 205))
+    for px in (x0 + 10, x0 + 40, x0 + 70):
+        draw.rectangle([px, y0 + 12, px + 2, y0 + h - 8], fill=(58, 58, 58))
+        draw.ellipse([px - 2, y0 + 8, px + 4, y0 + 14], fill=(242, 201, 76))
+    fy, fw, fh = y0 + 12, 20, 15
+    # US flag: stripes + blue canton
+    fx = x0 + 14
+    for i in range(5):
+        draw.rectangle([fx, fy + i * 3, fx + fw, fy + i * 3 + 3],
+                       fill=(185, 28, 28) if i % 2 == 0 else (255, 255, 255))
+    draw.rectangle([fx, fy, fx + 10, fy + 8], fill=(29, 78, 216))
+    for dx, dy in ((2, 2), (6, 2), (2, 5), (6, 5)):
+        draw.ellipse([fx + dx, fy + dy, fx + dx + 1, fy + dy + 1], fill=(255, 255, 255))
+    # China flag: red field, yellow stars
+    fx = x0 + 44
+    draw.rectangle([fx, fy, fx + fw, fy + fh], fill=(222, 41, 16))
+    draw.ellipse([fx + 3, fy + 3, fx + 7, fy + 7], fill=(255, 222, 89))
+    for dx, dy in ((12, 2), (16, 5), (12, 9), (17, 9)):
+        draw.ellipse([fx + dx, fy + dy, fx + dx + 2, fy + dy + 2], fill=(255, 222, 89))
+    # Russia flag: white / blue / red bands
+    fx = x0 + 74
+    for i, c in enumerate(((255, 255, 255), (29, 78, 216), (222, 41, 16))):
+        draw.rectangle([fx, fy + i * 5, fx + fw, fy + i * 5 + 5], fill=c)
+    draw.rectangle([x0, y0, x0 + w, y0 + h], outline=NAVY, width=2)
+
+
+def draw_tanker(draw, x0, y0, w, h):
+    """Oil tanker on waves — Strait of Hormuz."""
+    sky = (188, 214, 232)
+    sea = (47, 110, 142)
+    draw.rectangle([x0, y0, x0 + w, y0 + 42], fill=sky)
+    draw.rectangle([x0, y0 + 42, x0 + w, y0 + h], fill=sea)
+    draw.ellipse([x0 + 10, y0 + 10, x0 + 26, y0 + 26], fill=(242, 201, 76))
+    hy = y0 + 38
+    # hull (bow to the right)
+    draw.polygon([(x0 + 8, hy), (x0 + 66, hy), (x0 + 88, hy + 10),
+                  (x0 + 8, hy + 10)], fill=(43, 43, 43))
+    # burgundy stripe along the hull
+    draw.polygon([(x0 + 8, hy + 3), (x0 + 66, hy + 3), (x0 + 72, hy + 6),
+                  (x0 + 8, hy + 6)], fill=(157, 23, 77))
+    # deck cargo containers
+    draw.rectangle([x0 + 40, hy - 8, x0 + 62, hy], fill=(90, 90, 90))
+    # superstructure at the stern
+    draw.rectangle([x0 + 12, hy - 16, x0 + 32, hy], fill=(255, 255, 255))
+    draw.rectangle([x0 + 12, hy - 16, x0 + 32, hy - 12], fill=(157, 23, 77))
+    # funnel with smoke
+    draw.rectangle([x0 + 34, hy - 20, x0 + 40, hy], fill=(58, 58, 58))
+    draw.ellipse([x0 + 30, hy - 28, x0 + 40, hy - 20], fill=(200, 205, 210))
+    draw.ellipse([x0 + 34, hy - 34, x0 + 42, hy - 27], fill=(214, 218, 222))
+    # waves
+    for wy in (y0 + 58, y0 + 68):
+        for wx in range(x0 + 6, x0 + w - 18, 34):
+            draw.arc([wx, wy, wx + 28, wy + 10], 180, 360, fill=(255, 255, 255), width=2)
+    draw.rectangle([x0, y0, x0 + w, y0 + h], outline=NAVY, width=2)
+
+
+def draw_jet(draw, x0, y0, w, h):
+    """Fighter-jet silhouette in the sky, red sun (Japan)."""
+    sky = (188, 214, 232)
+    draw.rectangle([x0, y0, x0 + w, y0 + h], fill=sky)
+    draw.ellipse([x0 + w - 24, y0 + 10, x0 + w - 8, y0 + 26], fill=(185, 28, 28))
+    for cx, cy in ((x0 + 8, y0 + 14), (x0 + 30, y0 + 58), (x0 + 58, y0 + 62)):
+        draw.ellipse([cx, cy, cx + 18, cy + 8], fill=(255, 255, 255))
+    cy = y0 + h // 2
+    for ly in (cy - 14, cy + 12):
+        draw.line([(x0 + 6, ly), (x0 + 20, ly)], fill=(255, 255, 255), width=2)
+    # jet silhouette, nose to the right
+    draw.polygon([(x0 + 16, cy - 3), (x0 + 56, cy - 5), (x0 + 86, cy),
+                  (x0 + 56, cy + 5), (x0 + 16, cy + 3)], fill=NAVY)
+    draw.polygon([(x0 + 38, cy - 4), (x0 + 52, cy - 22), (x0 + 58, cy - 4)], fill=NAVY)
+    draw.polygon([(x0 + 40, cy + 4), (x0 + 52, cy + 16), (x0 + 58, cy + 4)], fill=NAVY)
+    draw.polygon([(x0 + 18, cy - 3), (x0 + 24, cy - 15), (x0 + 30, cy - 3)], fill=NAVY)
+    draw.rectangle([x0, y0, x0 + w, y0 + h], outline=NAVY, width=2)
+
+
+def draw_scales(draw, x0, y0, w, h):
+    """Scales of justice — sanctions / the law."""
+    draw.rectangle([x0, y0, x0 + w, y0 + h], fill=(240, 238, 228))
+    cx = x0 + w // 2
+    base_y = y0 + h - 10
+    draw.rectangle([cx - 3, y0 + 16, cx + 3, base_y], fill=NAVY)
+    draw.rectangle([cx - 18, base_y, cx + 18, base_y + 4], fill=NAVY)
+    draw.ellipse([cx - 4, y0 + 9, cx + 4, y0 + 17], fill=(180, 83, 9))
+    draw.rectangle([x0 + 14, y0 + 20, x0 + w - 14, y0 + 24], fill=NAVY)
+    for px in (x0 + 18, x0 + w - 18):
+        draw.line([(px, y0 + 24), (px - 9, y0 + 46)], fill=NAVY, width=2)
+        draw.line([(px, y0 + 24), (px + 9, y0 + 46)], fill=NAVY, width=2)
+        draw.line([(px, y0 + 24), (px, y0 + 46)], fill=NAVY, width=2)
+        draw.polygon([(px - 11, y0 + 46), (px + 11, y0 + 46), (px, y0 + 58)],
+                     fill=(77, 124, 15))
+    draw.rectangle([x0, y0, x0 + w, y0 + h], outline=NAVY, width=2)
+
+
+def draw_desert(draw, x0, y0, w, h):
+    """Desert dunes, mountains and a palm — Yemen."""
+    draw.rectangle([x0, y0, x0 + w, y0 + h], fill=(245, 222, 179))
+    draw.ellipse([x0 + 66, y0 + 8, x0 + 88, y0 + 30], fill=(232, 140, 40))
+    draw.polygon([(x0, y0 + 52), (x0 + 30, y0 + 24), (x0 + 60, y0 + 52)],
+                 fill=(150, 110, 70))
+    draw.polygon([(x0 + 42, y0 + 52), (x0 + 72, y0 + 30), (x0 + w, y0 + 52)],
+                 fill=(130, 95, 60))
+    draw.ellipse([x0 - 24, y0 + 46, x0 + 58, y0 + 88], fill=(214, 164, 100))
+    draw.ellipse([x0 + 38, y0 + 54, x0 + w + 24, y0 + 94], fill=(196, 144, 82))
+    # palm tree
+    draw.line([(x0 + 24, y0 + 74), (x0 + 28, y0 + 46)], fill=(101, 67, 33), width=3)
+    for ex, ey in ((x0 + 10, y0 + 38), (x0 + 18, y0 + 32), (x0 + 28, y0 + 30),
+                   (x0 + 38, y0 + 32), (x0 + 46, y0 + 38)):
+        draw.line([(x0 + 28, y0 + 46), (ex, ey)], fill=(77, 124, 15), width=3)
+    draw.rectangle([x0, y0, x0 + w, y0 + h], outline=NAVY, width=2)
+
+
 def main():
     img = Image.new("RGB", (W, H), PAPER)
     d = ImageDraw.Draw(img)
@@ -144,36 +259,45 @@ def main():
 
     # ---- supporting stories --------------------------------------------
     stories = [
-        ("DIPLOMACY", BLUE,
+        ("DIPLOMACY", BLUE, draw_flags,
          "Trump in Asia: Manila for ASEAN, then Shenzhen for APEC",
          "Trilateral nuclear talks with Xi and Putin set for Nov 19."),
-        ("MIDDLE EAST", BURGUNDY,
+        ("MIDDLE EAST", BURGUNDY, draw_tanker,
          "Hormuz on edge: Iran drones at US radar in Bahrain intercepted",
          "Tankers hit mines; a third US carrier arrives in the Gulf."),
-        ("ASIA-PACIFIC", TEAL,
+        ("ASIA-PACIFIC", TEAL, draw_jet,
          "Japan scrambles jets as suspected Russian aircraft violate airspace",
          "Tokyo calls the incursion a serious violation of sovereignty."),
-        ("GAZA", OLIVE,
+        ("GAZA", OLIVE, draw_scales,
          "UK sanctions Israeli settlement firms",
          "West urges Israel to open Gaza aid crossings."),
-        ("YEMEN", AMBER,
+        ("YEMEN", AMBER, draw_desert,
          "Houthis advance in Yemen; forces pull back to defend Aden",
          "Front lines shift as the port city braces for a siege."),
     ]
     f_stag = font(SANS_BOLD, 15)
-    f_sh = font(SANS_BOLD, 23)
+    f_sh = font(SANS_BOLD, 22)
     f_ss = font(SANS, 17)
+    THUMB_W, THUMB_H = 96, 78
+    THUMB_X = W - MARGIN - THUMB_W
+    TEXT_W = THUMB_X - 12 - (MARGIN + 24)
     y = 464
-    for tag, color, head, summ in stories:
+    for tag, color, illus, head, summ in stories:
         d.rectangle([MARGIN, y, MARGIN + 8, y + 78], fill=color)
         d.text((MARGIN + 24, y), tag, font=f_stag, fill=color)
         hy = y + 21
-        for ln in wrap(d, head, f_sh, W - MARGIN - (MARGIN + 24)):
+        for ln in wrap(d, head, f_sh, TEXT_W):
             d.text((MARGIN + 24, hy), ln, font=f_sh, fill=INK)
-            hy += 27
-        for ln in wrap(d, summ, f_ss, W - MARGIN - (MARGIN + 24)):
+            hy += 26
+        for ln in wrap(d, summ, f_ss, TEXT_W):
             d.text((MARGIN + 24, hy), ln, font=f_ss, fill=GRAY)
             hy += 21
+        # thumbnail: render on a temp image so nothing can spill past
+        # the panel bounds, then paste it into the row
+        thumb = Image.new("RGB", (THUMB_W, THUMB_H), PAPER)
+        td = ImageDraw.Draw(thumb)
+        illus(td, 0, 0, THUMB_W, THUMB_H)
+        img.paste(thumb, (THUMB_X, y))
         y += 96
         if y < 940:
             d.line([(MARGIN, y - 10), (W - MARGIN, y - 10)], fill=LIGHT_RULE, width=1)
